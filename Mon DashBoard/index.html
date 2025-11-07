@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>☕ IoT Café Internet Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import { getDatabase, ref, query, limitToLast, onChildAdded } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+
+    // 🔧 Your Firebase Config
+    const firebaseConfig = {
+      apiKey: "",
+      authDomain: "sol-iot.firebaseapp.com",
+      databaseURL: "https://sol-iot-default-rtdb.firebaseio.com",
+      projectId: "sol-iot",
+      storageBucket: "sol-iot.firebasestorage.app",
+      messagingSenderId: "822010475539",
+      appId: "1:822010475539:web:3960ccf8bc41578607fbe6",
+      measurementId: "G-DNPZZGFBWF"
+    };
+
+    // 🔥 Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // 🔁 Listen to the latest data point
+    const iotRef = query(ref(db, "/"), limitToLast(1));
+
+    onChildAdded(iotRef, (snapshot) => {
+      const data = snapshot.val();
+      
+      document.getElementById("cabine").textContent = 1;
+      document.getElementById("temp").textContent = data.temp + " °C";
+     
+      document.getElementById("eff").textContent = data.efficiency + " %";
+      document.getElementById("net").textContent = data.internet + " Mbps";
+      document.getElementById("time").textContent = data.temp + " min";
+      document.getElementById("cost").textContent = data.cost + " DT";
+      document.getElementById("poll").textContent = data.pollution + " ppm";
+      document.getElementById("activity").textContent = data.activity;
+    });
+      sleep(3);
+       if (data.temp >= 60) {
+        document.getElementById("temp").style.color = "red";
+        alert("Température élevée détectée !");
+      } else {
+        document.getElementById("temp").style.color = "green";
+      }
+  </script>
+</head>
+
+<body>
+  <h1>☕ Tableau de bord — Café Internet IoT</h1>
+
+  <div class="grid">
+    <div class="card"><h3>Cabine</h3><span id="cabine">--</span></div>
+    <div class="card"><h3>Température</h3><span id="temp">--</span></div>
+    <div class="card"><h3>Efficacité</h3><span id="eff">--</span></div>
+    <div class="card"><h3>Vitesse Internet</h3><span id="net">--</span></div>
+    <div class="card"><h3>Temps d'utilisation</h3><span id="time">--</span></div>
+    <div class="card"><h3>Coût</h3><span id="cost">--</span></div>
+    <div class="card"><h3>Pollution</h3><span id="poll">--</span></div>
+    <div class="card"><h3>Activité</h3><span id="activity">--</span></div>
+  </div>
+</body>
+</html>
