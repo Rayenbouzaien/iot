@@ -9,7 +9,8 @@ import {
     extract_array,
     courbe,
     updateThermometer,
-    gauge
+    gauge,
+    checkAlerts
 } from './functions.js'
 
 const appSettings = {
@@ -59,4 +60,5 @@ document.addEventListener('DOMContentLoaded', async () => {
     } catch (error) {
         console.error('Error loading data:', error);
     }
+
 });
